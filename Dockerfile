@@ -3,7 +3,7 @@ ARG PHP_VERSION=7.3
 ##
 # Prepare Invoiceninja sources for reuse later
 ##
-FROM alpine:latest AS base
+FROM php:${PHP_VERSION}-fpm-alpine AS php-base
 ARG SNIPEIT_VERSION=5.0.4
 
 RUN set -eux; \
@@ -22,10 +22,6 @@ RUN curl -o /tmp/snipeit.zip -LJ0 https://github.com/snipe/snipe-it/archive/v${S
     && cp /var/www/app/.env.example /var/www/app/.env \
     && rm -rf /var/www/app/tests
 
-##
-# Prepare final image including PHP
-##
-FROM php:${PHP_VERSION}-fpm-alpine AS php-base
 LABEL maintainer="jcnengel@gmail.com"
 
 ##
