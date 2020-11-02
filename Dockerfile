@@ -9,7 +9,7 @@ ARG SNIPEIT_VERSION=5.0.4
 RUN set -eux; \
     apk update \
     && apk add --no-cache \
-    curl \
+    curl libldap \
     libarchive-tools; \
     mkdir -p /var/www/app
     
@@ -63,9 +63,6 @@ RUN addgroup -S "${SNIPEIT_USER}" \
 	chown -R "${SNIPEIT_USER}":"${SNIPEIT_USER}" /var/www/app
 
 ENV APP_ENV production
-ENV LOG errorlog
-ENV SELF_UPDATER_SOURCE ''
-ENV NPM_PATH="/usr/bin"
 
 VOLUME /var/www/app/public
 
