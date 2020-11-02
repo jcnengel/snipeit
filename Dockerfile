@@ -34,10 +34,10 @@ LABEL maintainer="jcnengel@gmail.com"
 RUN apk update \
     && apk add --no-cache git gmp-dev freetype-dev libjpeg-turbo-dev curl-dev \
     coreutils chrpath fontconfig libpng-dev oniguruma-dev zip libzip libzip-dev \
-    && docker-php-ext-configure gmp \
+    && docker-php-ext-configure gmp ldap-dev \
     && docker-php-ext-install json pdo pdo_mysql mbstring tokenizer curl ldap fileinfo zip bcmath xml xmlreader gd \
     && echo "php_admin_value[error_reporting] = E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT & ~E_DEPRECATED" >> /usr/local/etc/php-fpm.d/www.conf \
-    && apk del gmp-dev freetype-dev libjpeg-turbo-dev libpng-dev oniguruma-dev libzip-dev curl-dev
+    && apk del gmp-dev freetype-dev libjpeg-turbo-dev libpng-dev oniguruma-dev libzip-dev curl-dev ldap-dev
 
 RUN { \
 	echo 'opcache.memory_consumption=128'; \
