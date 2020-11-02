@@ -12,6 +12,8 @@ RUN set -eux; \
     curl libldap \
     libarchive-tools; \
     mkdir -p /var/www/app
+
+WORKDIR /var/www/app
     
 RUN curl -o /tmp/snipeit.zip -LJ0 https://github.com/snipe/snipe-it/archive/v${SNIPEIT_VERSION}.zip \
     && bsdtar --strip-components=1 -C /var/www/app -xf /tmp/snipeit.zip \
@@ -19,8 +21,7 @@ RUN curl -o /tmp/snipeit.zip -LJ0 https://github.com/snipe/snipe-it/archive/v${S
     && cp -R /var/www/app/storage /var/www/app/docker-backup-storage  \
     && cp -R /var/www/app/public /var/www/app/docker-backup-public  \
     && mkdir -p /var/www/app/storage \
-    && cp /var/www/app/.env.example /var/www/app/.env \
-    && rm -rf /var/www/app/tests
+    && cp /var/www/app/.env.example /var/www/app/.env
 
 LABEL maintainer="jcnengel@gmail.com"
 
@@ -48,7 +49,8 @@ RUN { \
 
 # Install composer and related requirements
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin \
-	--filename=composer
+	--filename=composer; \
+	composer install	
 
 # Create local user
 ENV SNIPEIT_USER=snipeit
