@@ -49,7 +49,7 @@ RUN curl -o /tmp/snipeit.tar.gz -LJ0 https://github.com/snipe/snipe-it/archive/v
     && cp -R /var/www/app/public /var/www/app/docker-backup-public  \
     && mkdir -p /var/www/app/storage \
     && cp /var/www/app/.env.example /var/www/app/.env \
-    && composer install
+    && composer install --no-dev
 
 VOLUME /var/www/app/public
 
