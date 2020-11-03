@@ -5,6 +5,7 @@ ARG PHP_VERSION=7.3
 ##
 FROM php:${PHP_VERSION}-fpm-alpine AS php-base
 ARG SNIPEIT_VERSION=5.0.4
+LABEL maintainer="Johannes Engel <jcnengel@gmail.com>"
 
 RUN set -eux; \
     apk update \
@@ -12,18 +13,6 @@ RUN set -eux; \
     curl libldap \
     libarchive-tools; \
     mkdir -p /var/www/app
-
-WORKDIR /var/www/app
-    
-RUN curl -o /tmp/snipeit.zip -LJ0 https://github.com/snipe/snipe-it/archive/v${SNIPEIT_VERSION}.zip \
-    && bsdtar --strip-components=1 -C /var/www/app -xf /tmp/snipeit.zip \
-    && rm /tmp/snipeit.zip \
-    && cp -R /var/www/app/storage /var/www/app/docker-backup-storage  \
-    && cp -R /var/www/app/public /var/www/app/docker-backup-public  \
-    && mkdir -p /var/www/app/storage \
-    && cp /var/www/app/.env.example /var/www/app/.env
-
-LABEL maintainer="jcnengel@gmail.com"
 
 ##
 # Install missing PHP extensions
@@ -52,6 +41,18 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 	--filename=composer; \
 	composer install	
 
+WORKDIR /var/www/app
+    
+RUN curl -o /tmp/snipeit.tar.gz -LJ0 https://github.com/snipe/snipe-it/archive/v${SNIPEIT_VERSION}.tar.gz \
+    && bsdtar --strip-components=1 -C /var/www/app -xf /tmp/snipeit.tar.gz \
+    && rm /tmp/snipeit.tar.gz \
+    && cp -R /var/www/app/storage /var/www/app/docker-backup-storage  \
+    && cp -R /var/www/app/public /var/www/app/docker-backup-public  \
+    && mkdir -p /var/www/app/storage \
+    && cp /var/www/app/.env.example /var/www/app/.env
+
+VOLUME /var/www/app/public
+
 # Create local user
 ENV SNIPEIT_USER=snipeit
 RUN addgroup -S "${SNIPEIT_USER}" \
@@ -60,10 +61,8 @@ RUN addgroup -S "${SNIPEIT_USER}" \
 	addgroup "${SNIPEIT_USER}" www-data; \
 	chown -R "${SNIPEIT_USER}":"${SNIPEIT_USER}" /var/www/app
 
-ENV APP_ENV production
-
-VOLUME /var/www/app/public
-
 USER $SNIPEIT_USER
+
+ENV APP_ENV production
 
 CMD ["php-fpm"]
