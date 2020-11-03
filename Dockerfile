@@ -38,8 +38,7 @@ RUN { \
 
 # Install composer and related requirements
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin \
-	--filename=composer; \
-	composer install	
+	--filename=composer
 
 WORKDIR /var/www/app
     
@@ -49,7 +48,8 @@ RUN curl -o /tmp/snipeit.tar.gz -LJ0 https://github.com/snipe/snipe-it/archive/v
     && cp -R /var/www/app/storage /var/www/app/docker-backup-storage  \
     && cp -R /var/www/app/public /var/www/app/docker-backup-public  \
     && mkdir -p /var/www/app/storage \
-    && cp /var/www/app/.env.example /var/www/app/.env
+    && cp /var/www/app/.env.example /var/www/app/.env \
+    && composer install
 
 VOLUME /var/www/app/public
 
