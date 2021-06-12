@@ -1,10 +1,10 @@
-ARG PHP_VERSION=7.3
+ARG PHP_VERSION=7.4
 
 ##
 # Prepare Invoiceninja sources for reuse later
 ##
 FROM php:${PHP_VERSION}-fpm-alpine AS php-base
-ARG SNIPEIT_VERSION=5.0.4
+ARG SNIPEIT_VERSION=5.1.6
 LABEL maintainer="Johannes Engel <jcnengel@gmail.com>"
 
 RUN set -eux; \
