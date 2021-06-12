@@ -20,7 +20,7 @@ RUN set -eux; \
 RUN apk update \
     && apk add --no-cache git gmp-dev freetype-dev libjpeg-turbo-dev curl-dev \
     coreutils chrpath fontconfig libpng-dev oniguruma-dev zip libzip libzip-dev \
-    openldap-dev libxml2-dev \
+    openldap-dev libxml2-dev mariadb-client \
     && docker-php-ext-configure gmp \
     && docker-php-ext-install json pdo pdo_mysql mbstring tokenizer curl ldap fileinfo zip bcmath xml gd \
     && echo "php_admin_value[error_reporting] = E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT & ~E_DEPRECATED" >> /usr/local/etc/php-fpm.d/www.conf \
