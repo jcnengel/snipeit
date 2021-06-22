@@ -21,8 +21,11 @@ RUN apk update \
     && apk add --no-cache git gmp-dev freetype-dev libjpeg-turbo-dev curl-dev \
     coreutils chrpath fontconfig libpng-dev oniguruma-dev zip libzip libzip-dev \
     openldap-dev libxml2-dev mariadb-client \
+    freetype libjpeg-turbo libpng libxml2 openldap \
     && docker-php-ext-configure gmp \
+    && docker-php-ext-configure gd --with-freetype=/usr/include --with-jpeg=/usr/include \
     && docker-php-ext-install json pdo pdo_mysql mbstring tokenizer curl ldap fileinfo zip bcmath xml gd \
+    && docker-php-ext-enable gd \
     && echo "php_admin_value[error_reporting] = E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT & ~E_DEPRECATED" >> /usr/local/etc/php-fpm.d/www.conf \
     && apk del gmp-dev freetype-dev libjpeg-turbo-dev libpng-dev oniguruma-dev \
     libzip-dev curl-dev openldap-dev libxml2-dev
